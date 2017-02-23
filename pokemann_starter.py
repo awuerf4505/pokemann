@@ -58,13 +58,16 @@ class Move:
 if __name__ == '__main__':
 
     # Make some moves
-    homework = Move("Homework", "teacher", 30, 40, 100)
-    pop_quiz = Move("Pop quiz", "teacher", 30, 40, 100)
-    lecture = Move("Lecture", "teacher", 30, 40, 100)
-    dress_code = Move("Dress Code", "administrator", 30, 50, 95)
-    id_violation = Move("ID Violation", "administrator", 30, 50, 95)
-    excessive_talking = Move("Excessive Talking", "student", 30, 40, 100)
-    disruptive_behavior = Move("Disruptive Behavior", "student", 30, 40, 100)
+    homework = Move("Homework", "teacher", 80, 10, 100)
+    pop_quiz = Move("Pop quiz", "teacher", 20, 60, 45)
+    lecture = Move("Lecture", "teacher", 50, 30, 60)
+    teacher_strike = Move("Teacher Strike", "teacher", 20, 60, 45)
+    complaining = Move("Complaining", "teacher", 80, 10, 100)
+
+    phone_out = Move("Phone put during lesson", "student", 80, 10, 100)
+    no_hw = Move("No HW", "student", 50, 30, 60)
+    talking_back = Move("Talking Back", "student", 20, 60, 45)
+    complaining = Move("Complaining about social life", "student", 50, 30, 60)
 
     # Create some Pokemann(s)
     coopasaur = Pokemann("coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, id_violation], "coopasaur.png")
