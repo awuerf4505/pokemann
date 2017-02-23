@@ -11,11 +11,19 @@ class Pokemann:
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
+        self.fainted = False
+        
     def execute_move(self, move, target):
-        pass
+        damage = move.get_damage(self, target)
+        target.take_damage(damage)
 
-    def apply_damage(self, amount):
-        pass
+    def take_damage(self, amount):
+        self.health -= amount
+
+        if self.health <= 0:
+            self.health = 0
+            self.fainted = True
+            
 
     def draw(self):
         pass
@@ -47,11 +55,14 @@ class Move:
         else:
             effectiveness = 1.0
 
+        return effectiveness
+
     def get_damage(self, attacker, target):
         p = self.power
         a = attacker.attack
         d = target.defense
-        e = get_effectiveness(target)
+        e = self.get_effectiveness(target)
+        
         return p * a / d * e 
     
 
@@ -69,7 +80,13 @@ if __name__ == '__main__':
     talking_back = Move("Talking Back", "student", 20, 60, 45)
     complaining = Move("Complaining about social life", "student", 50, 30, 60)
 
+    ask_id = Move("Ask for ID", "administrator", 50, 10, 100)
+    call = Move("Call Parents", "administrator", 40, 40, 70)
+    expulsion = Move("Expulsion", "administrator", 10, 80, 35)
+    fired = Move("Fire Staff Member", "administrator", 10, 80, 35)
+    restrict_lunch = Move("Restrict Lunchtime", "administrator", 40, 40, 70)
+
     # Create some Pokemann(s)
-    coopasaur = Pokemann("coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, id_violation], "coopasaur.png")
-    mayfieldarow = Pokemann("mayfieldarow", "administrator", 30, 20, 50, 30, [dress_code, id_violation, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("andrewag", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
+    coopasaur = Pokemann("coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, lecture], "coopasaur.png")
+    mayfieldarow = Pokemann("mayfieldarow", "administrator", 30, 20, 50, 30, [ask_id, fired, call], "mayfieldarow.png")
+    andrewag = Pokemann("andrewag", "student", 30, 20, 50, 30, [phone_out, no_hw, complaining], "andrewag.png")
