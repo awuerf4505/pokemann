@@ -12,24 +12,89 @@ class Pokemann:
         self.image = image # path to image file
 
         self.fainted = False
+        self.current_health = health
+
+
+    def get_available_moves(self):
+        result = []
+                  
+        for m in self.moves:
+            if m.remaining_power > 0:
+                  result.append(m)
+                    
+        return result
         
     def execute_move(self, move, target):
-        damage = move.get_damage(self, target)
-        target.take_damage(damage)
+        available = self.get_available_moves()
+        
+        if self.fainted:
+            print("Error: " + self.name + " is fainted!")
+        elif move not in available:
+            print("Error: " + move.name + " is not available.")
+        else:
+            r = random.randint(1, 100)
 
+            if r <= move.accuracy:
+                damage = move.get_damage(self, target)
+                target.apply_damage(damage)
+                print(move.name + " hits " + target.name + " for " + str(damage) + ".")
+            else:
+                print(move.name + "missed!")
+
+            move.remaining_power -= 1
+                      
     def take_damage(self, amount):
-        self.health -= amount
+        self.current_health -= amount
 
-        if self.health <= 0:
-            self.health = 0
-            self.fainted = True
-            
+        if self.current_health <= 0:
+            self.faint()
+    def faint(self):
+        self.current_health = 0
+        print(self.name + " fainted!")
+                  
+    def heal(self, amount):
+        """
+        Raises current_health by amount but not more than the base health.
+        """
+        pass
+
+    def get_available_moves(self):
+        result = []
+                  
+        for m in self.moves:
+            if m.remaining_power > 0:
+                  result.append(m)
+                  
+        return result
+                  
+    def get_move(self):
+        """
+        This might only be used by computer controlled Pokemann. Perhaps
+        'better' Pokemann could be smarter about the random move they choose.
+        """
+        available = self.get_available_moves()
+        return random.choice(available)
 
     def draw(self):
         pass
-
-
+                      
 class Move:
+
+    STRONG = 2.0
+    NORMAL = 1.0
+    WEAK = 0.5
+        
+    effectiveness = {
+            ('student' ,'administrator'): STRONG,
+            ('student' ,'student'): NORMAL,
+            ('student', 'teacher'): WEAK,
+            ('teacher', 'student'): STRONG,
+            ('teacher' ,'teacher'): NORMAL,
+            ('teacher' ,'administrator'): WEAK,
+            ('administrator' ,'teacher'): STRONG,
+            ('administrator', 'administrator'): NORMAL,
+            ('administrator', 'student'): WEAK
+            }
 
     def __init__(self, name, kind, powerpoint, power, accuracy):
 
@@ -39,31 +104,16 @@ class Move:
         self.power = power
         self.accuracy = accuracy
 
-    def get_effectiveness(self, target):
-        if self.kind == 'teacher' and target.kind == 'student':
-            effectiveness = 1.5
-        elif self.kind == 'student' and target.kind == 'teacher':
-            effectiveness = 0.5
-        elif self.kind == 'student' and target.kind == 'administrator':
-            effectiveness = 0.5
-        elif self.kind == 'teacher' and target.kind == 'administrator':
-            effectiveness = 1.5
-        elif self.kind == 'administrator' and target.kind == 'student':
-            effectiveness = 2.5
-        elif self.kind == 'administrator' and target.kind == 'teacher':
-            effectiveness = 2.5
-        else:
-            effectiveness = 1.0
+        self.remaining_power = remaining_power
 
-        return effectiveness
 
     def get_damage(self, attacker, target):
         p = self.power
         a = attacker.attack
         d = target.defense
-        e = self.get_effectiveness(target)
+        e = self.effectiveness[(self.kind, target.kind)]
         
-        return p * a / d * e 
+        return round(p * a / d * e) 
     
 
 if __name__ == '__main__':
