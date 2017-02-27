@@ -35,8 +35,8 @@ class Pokemann:
             r = random.randint(1, 100)
 
             if r <= move.accuracy:
-                damage = move.get_damage(self, target)
-                target.apply_damage(damage)
+                damage = move.calculate_damage(self, target)
+                target.take_damage(damage)
                 print(move.name + " hits " + target.name + " for " + str(damage) + ".")
             else:
                 print(move.name + "missed!")
@@ -48,6 +48,7 @@ class Pokemann:
 
         if self.current_health <= 0:
             self.faint()
+            
     def faint(self):
         self.current_health = 0
         print(self.name + " fainted!")
@@ -58,6 +59,16 @@ class Pokemann:
         """
         pass
 
+    def restore(self):
+        """
+        Restores all health and resets powerpoint for all moves.
+        """
+        pass
+        
+
+    def draw(self):
+        pass
+    
     def get_available_moves(self):
         result = []
                   
@@ -75,8 +86,6 @@ class Pokemann:
         available = self.get_available_moves()
         return random.choice(available)
 
-    def draw(self):
-        pass
                       
 class Move:
 
@@ -104,10 +113,10 @@ class Move:
         self.power = power
         self.accuracy = accuracy
 
-        self.remaining_power = remaining_power
+        self.remaining_power = powerpoint
 
 
-    def get_damage(self, attacker, target):
+    def calculate_damage(self, attacker, target):
         p = self.power
         a = attacker.attack
         d = target.defense
@@ -115,6 +124,156 @@ class Move:
         
         return round(p * a / d * e) 
     
+    def restore(self):
+        """
+        Resets remaing_power to starting powerpoint.
+        """
+        
+class Character:
+    
+    def __init__(self, name, pokemann, image):
+        self.name = name
+        self.pokemann = pokemann
+        self.image = image
+
+    def get_available_pokemann(self):
+        """
+        Returns a list of all unfainted Pokemann belonging to a character.
+        """
+        pass
+    
+    def get_first_pokemann(self):
+        """
+        Returns the first [0] unfainted character in the pokemann list.
+        """
+        pass
+    
+    def set_first_pokemann(self, swap_pos):
+        """
+        Moves pokemann to first position [0] in the pokemann list by exchanging it with
+        pokemann located at swap_pos.
+        """
+        pass
+    
+    def draw(self):
+        pass
+
+class Player(Character):
+
+    def __init__(self, name, pokemann):
+        Character.__init__(self, name, pokemann)
+        
+        self.collection = []
+        self.pokeballs = 0
+
+class Opponent(Character):
+
+    def __init__(self, name, pokemann):
+        Character.__init__(self, name, pokemann)
+
+class Game:
+
+    def __init__(self):
+        pass
+
+    def select_pokemann(self, character):
+        """
+        1) Generate a menu which shows a numbered list of all characters along with status (health).
+        2) Have the player select a character.
+        3) Move the selected character to position [0] in the characters list.
+        """
+        pass
+
+    def select_random_pokemann(self, pokemann):
+        """
+        Returns a random available move from the pokemann. This will probably only be used
+        by computer controlled pokemann.
+        """
+        available_moves = pokemann.get_available_moves()
+        return random.choice(available_moves)
+    
+    def select_move(self, pokemann):
+        """
+        1) Generate a menu which shows a numbered list all available moves for a pokemann.
+        2) Have the player select a move.
+        3) Return the selected move.
+        """
+
+        available = pokemann.get_available_moves()
+        
+        print("Select a move:")
+        
+        for i, move in enumerate(available):
+            print(str(i) + ") " + move.name)
+
+        n = input("Your choice: ")
+        n = int(n)
+        
+        return available[n]
+
+    def select_random_move(self, pokemann):
+        """
+        Returns a random available move from the pokemann. This will probably only be used
+        by computer controlled pokemann.
+        """
+        pass
+
+    def fight(self, player_pokemann, target_pokemann):
+        """
+        This controls the logic for a single round in a fight whether in context of a battle
+        or with a wild pokemann.
+        
+        1. Select player_move (use select_move)
+        2. Select target_move (use select_random_move)
+        3. Compare speeds of player_pokemann and target_pokemann
+            If player_pokemann.speed > target_pokemann.speed, set first = player_pokemann,
+            second = target_pokemann. Otherwise, set first = target_pokemann, second = player_pokemann
+            If speeds are equal, assign first and second randomly.
+        4. Call
+            first.execute_move(move, second)
+        5. If second is still unfainted, call
+            second.execute_move(move, first)
+        (Once we have an actual game, we'll need to devise a way to remove fainted targets.)
+        """
+        pass
+    
+    def catch(self, target):
+        """
+        Can only be applied to wild pokemann. Determine a catch by generating a random
+        value based on the target health. If a catch is successful, add the target to the
+        player's collection. Decrease the player's pokeball count by 1 regardless of success.
+        (Perhaps pokeballs kind could be incorporated into the probability at some point.)
+        """
+        pass
+
+    def encounter(self, player, target):
+        """
+        This function controls all logic when encountering a wild pokemann. Options are to
+        fight, catch, or ignore.
+        Use a loop so that this continues until a pokemann is fainted, caught, or the
+        target is ignored.
+        """
+        pass
+    
+
+    def battle(self, player, opponent):
+        """
+        This function controls all battle logic including decisions to reorder pokemann,
+        fight, use potions, and whatever else happens in Pokebattles.
+        Use a loop so that this continues until all characters for either the player or
+        opponent are fainted.
+        """
+        pass
+    
+    def loop(self):
+        pass
+    
+        # get input
+
+        # do logic stuff
+
+        # draw stuff
+
 
 if __name__ == '__main__':
 
