@@ -1,3 +1,4 @@
+import random
 class Pokemann:
 
     def __init__(self, name, kind, attack, defense, speed, health, moves, image):
