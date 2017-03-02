@@ -40,7 +40,7 @@ class Pokemann:
                 target.take_damage(damage)
                 print(move.name + " hits " + target.name + " for " + str(damage) + ".")
             else:
-                print(move.name + "missed!")
+                print(move.name + " missed!")
 
             move.remaining_power -= 1
                       
@@ -51,8 +51,9 @@ class Pokemann:
             self.faint()
             
     def faint(self):
-        self.current_health = 0
-        print(self.name + " fainted!")
+        if self.current_health <= 0:
+            self.current_health = 0
+            print(self.name + " fainted!")
                   
     def heal(self, amount):
         """
@@ -126,9 +127,9 @@ class Move:
         return round(p * a / d * e) 
     
     def restore(self):
-        """
-        Resets remaing_power to starting powerpoint.
-        """
+        self.remaining_power = powerpoint
+        print("Power Restored")
+        
         
 class Character:
     
@@ -274,6 +275,9 @@ class Game:
         # do logic stuff
 
         # draw stuff
+
+    '''def __init__(self, name, kind, powerpoint, power, accuracy):'''
+
 
 
 if __name__ == '__main__':
