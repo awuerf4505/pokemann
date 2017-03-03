@@ -27,7 +27,7 @@ class Pokemann:
         
     def execute_move(self, move, target):
         available = self.get_available_moves()
-        
+
         if self.fainted:
             print("Error: " + self.name + " is fainted!")
         elif move not in available:
@@ -52,7 +52,7 @@ class Pokemann:
             
     def faint(self):
         if self.current_health <= 0:
-            self.current_health = 0
+            self.fainted = True
             print(self.name + " fainted!")
                   
     def heal(self, amount):
@@ -62,6 +62,9 @@ class Pokemann:
         pass
 
     def restore(self):
+        self.current_health = self.health
+        print("Power Restored")
+        self.remaining_power = self.powerpoint
         """
         Restores all health and resets powerpoint for all moves.
         """
@@ -127,7 +130,7 @@ class Move:
         return round(p * a / d * e) 
     
     def restore(self):
-        self.remaining_power = powerpoint
+        self.current_health = self.health
         print("Power Restored")
         
         
@@ -278,7 +281,7 @@ class Game:
 
     '''def __init__(self, name, kind, powerpoint, power, accuracy):'''
 
-
+    '''    def __init__(self, name, kind, attack, defense, speed, health, moves, image):'''
 
 if __name__ == '__main__':
 
