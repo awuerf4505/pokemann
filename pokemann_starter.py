@@ -51,9 +51,8 @@ class Pokemann:
             self.faint()
             
     def faint(self):
-        if self.current_health <= 0:
-            self.fainted = True
-            print(self.name + " fainted!")
+        self.current_health <= 0
+        print(self.name + " fainted!")
                   
     def heal(self, amount):
         """
@@ -286,24 +285,24 @@ class Game:
 if __name__ == '__main__':
 
     # Make some moves
-    homework = Move("Homework", "teacher", 80, 10, 100)
-    pop_quiz = Move("Pop quiz", "teacher", 20, 60, 45)
-    lecture = Move("Lecture", "teacher", 50, 30, 60)
+    homework = Move("Homework", "teacher", 5, 10, 100)
+    pop_quiz = Move("Pop quiz", "teacher", 3, 30, 45)
+    lecture = Move("Lecture", "teacher", 1, 15, 60)
     teacher_strike = Move("Teacher Strike", "teacher", 20, 60, 45)
     complaining = Move("Complaining", "teacher", 80, 10, 100)
 
-    phone_out = Move("Phone put during lesson", "student", 80, 10, 100)
-    no_hw = Move("No HW", "student", 50, 30, 60)
-    talking_back = Move("Talking Back", "student", 20, 60, 45)
-    complaining = Move("Complaining about social life", "student", 50, 30, 60)
+    phone_out = Move("Phone put during lesson", "student", 8, 10, 100)
+    no_hw = Move("No HW", "student", 5, 30, 60)
+    talking_back = Move("Talking Back", "student", 2, 60, 45)
+    complaining = Move("Complaining about social life", "student", 5, 30, 60)
 
-    ask_id = Move("Ask for ID", "administrator", 50, 10, 100)
-    call = Move("Call Parents", "administrator", 40, 40, 70)
-    expulsion = Move("Expulsion", "administrator", 10, 80, 35)
-    fired = Move("Fire Staff Member", "administrator", 10, 80, 35)
-    restrict_lunch = Move("Restrict Lunchtime", "administrator", 40, 40, 70)
+    ask_id = Move("Ask for ID", "administrator", 5, 10, 100)
+    call = Move("Call Parents", "administrator", 4, 40, 70)
+    expulsion = Move("Expulsion", "administrator", 1, 80, 35)
+    fired = Move("Fire Staff Member", "administrator", 1, 80, 35)
+    restrict_lunch = Move("Restrict Lunchtime", "administrator", 4, 40, 70)
 
     # Create some Pokemann(s)
-    coopasaur = Pokemann("coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, lecture], "coopasaur.png")
+    coopasaur = Pokemann("coopasaur", "teacher", 10, 20, 50, 30, [homework, pop_quiz, lecture], "coopasaur.png")
     mayfieldarow = Pokemann("mayfieldarow", "administrator", 30, 20, 50, 30, [ask_id, fired, call], "mayfieldarow.png")
     andrewag = Pokemann("andrewag", "student", 30, 20, 50, 30, [phone_out, no_hw, complaining], "andrewag.png")
