@@ -66,8 +66,10 @@ class Pokemann:
         pass
 
     def restore(self):
-        self.current_health = self.health
-        print("Power Restored")
+        self.heal(self.health)
+        moves = self.get_available_moves
+        for m in moves:
+            print(m.name)
         
 
     def draw(self):
@@ -128,8 +130,8 @@ class Move:
         
         return round(p * a / d * e) 
     
-    def restore(self):
-        self.remaining_power = self.moves
+    def restore(self, move):
+        move.remaining_power = move.powerpoint
         print("Power Restored")
         
         
