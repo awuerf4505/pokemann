@@ -59,7 +59,7 @@ class Pokemann:
         Raises current_health by amount but not more than the base health. hello
         """
         self.current_health += amount
-        print(self.name + "'s has been healed.")
+        print(self.name + " Has Been Healed.")
         if self.current_health > self.health:
             self.current_health = self.health
         self.fainted = False
@@ -68,8 +68,9 @@ class Pokemann:
     def restore(self):
         self.heal(self.health)
         moves = self.get_available_moves
-        for m in moves:
-            print(m.name)
+        for m in self.moves:
+            m.remaining_power = m.powerpoint
+            print("Move Restored")
         
 
     def draw(self):
