@@ -56,7 +56,7 @@ class Pokemann:
                   
     def heal(self, amount):
         """
-        Raises current_health by amount but not more than the base health.
+        Raises current_health by amount but not more than the base health. hello
         """
         self.current_health += amount
         print(self.name + "'s has been healed.")
