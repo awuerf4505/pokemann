@@ -59,18 +59,20 @@ class Pokemann:
         Raises current_health by amount but not more than the base health. hello
         """
         self.current_health += amount
-        print(self.name + " Has Been Healed.")
         if self.current_health > self.health:
             self.current_health = self.health
         self.fainted = False
         pass
 
     def restore(self):
+        """
+        Restores all health and resets powerpoint for all moves.
+        """
         self.heal(self.health)
-        moves = self.get_available_moves
+        print(self.name + " restored")
         for m in self.moves:
-            m.remaining_power = m.powerpoint
-            print("Move Restored")
+            m.restore()
+            print(m.name+ " Restored")
         
 
     def draw(self):
@@ -131,9 +133,11 @@ class Move:
         
         return round(p * a / d * e) 
     
-    def restore(self, move):
-        move.remaining_power = move.powerpoint
-        print("Power Restored")
+    def restore(self):
+        """
+        Resets remaing_power to starting powerpoint.
+        """
+        self.remaining_power = self.powerpoint
         
         
 class Character:
@@ -147,7 +151,19 @@ class Character:
         """
         Returns a list of all unfainted Pokemann belonging to a character.
         """
-        pass
+        result = []
+        for p in self.pokemann:
+            if p.current_health == 0:
+                p.fainted = True
+            if not p.fainted:
+                result.append(p.name)
+
+        return result
+
+    def restore(self):
+        for p in self.pokemann:
+            p.restore()
+            
     
     def get_first_pokemann(self):
         """
@@ -167,16 +183,19 @@ class Character:
 
 class Player(Character):
 
-    def __init__(self, name, pokemann):
-        Character.__init__(self, name, pokemann)
+    def __init__(self, name, pokemann, image):
+        Character.__init__(self, name, pokemann, image)
         
         self.collection = []
         self.pokeballs = 0
+        self.image = image
 
 class Opponent(Character):
 
-    def __init__(self, name, pokemann):
-        Character.__init__(self, name, pokemann)
+    def __init__(self, name, pokemann, image):
+        Character.__init__(self, name, pokemann, image)
+
+        self.image = image
 
 class Game:
 
@@ -306,6 +325,24 @@ if __name__ == '__main__':
     restrict_lunch = Move("Restrict Lunchtime", "administrator", 4, 40, 70)
 
     # Create some Pokemann(s)
-    coopasaur = Pokemann("coopasaur", "teacher", 10, 20, 50, 30, [homework, pop_quiz, lecture], "coopasaur.png")
-    mayfieldarow = Pokemann("mayfieldarow", "administrator", 30, 20, 50, 30, [ask_id, fired, call], "mayfieldarow.png")
-    andrewag = Pokemann("andrewag", "student", 30, 20, 50, 30, [phone_out, no_hw, complaining], "andrewag.png")
+    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, [homework, pop_quiz, teacher_strike], "coopasaur.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, [lecture, teacher_strike, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, [lecture, teacher_strike, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, [call, teacher_strike, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, [talking_back, complaining, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, [talking_back, complaining, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, [talking_back, complaining, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, [talking_back, complaining, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, [talking_back, complaining, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, [talking_back, complaining, homework], "morganyta.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, [talking_back, complaining, homework], "katlevee.png")
+    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, [talking_back, complaining, homework], "marcelax.png")
+    
+    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
+
+    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
+    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
+
+    # Create a game
+    g = Game()
+ 
