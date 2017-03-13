@@ -1,7 +1,7 @@
 import random
 class Pokemann:
 
-    def __init__(self, name, kind, attack, defense, speed, health, moves, image):
+    def __init__(self, name, kind, attack, defense, speed, health, catch_rate, moves, image):
 
         self.name = name
         self.kind = kind
@@ -9,11 +9,13 @@ class Pokemann:
         self.defense = defense
         self.speed = speed
         self.health = health
+        self.catch_rate = catch_rate
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
         self.fainted = False
         self.current_health = health
+        
 
 
     def get_available_moves(self):
@@ -190,6 +192,24 @@ class Player(Character):
         self.pokeballs = 0
         self.image = image
 
+
+    def catch(self, target):
+        """
+        Can only be applied to wild pokemann. Determine a catch by generating a random
+        value and comparing it to the catch_rate. If a catch is successful, append the
+        target to the player's pokemann list. However, if the pokemann list already
+        contains 6 pokemann, add the caught target to the players computer instead.
+        Pokemann sent to the computer will be fully restored, but other caught pokemann
+        will remain at the strenght they were caught. Decrease the player's pokeball
+        count by 1 regardless of success.
+        """
+        r = random.randint(1, 100)
+
+        if r <= target.catch_rate:
+            pass
+        else:
+            print("It got away!")
+
 class Opponent(Character):
 
     def __init__(self, name, pokemann, image):
@@ -325,18 +345,18 @@ if __name__ == '__main__':
     restrict_lunch = Move("Restrict Lunchtime", "administrator", 4, 40, 70)
 
     # Create some Pokemann(s)
-    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, [homework, pop_quiz, teacher_strike], "coopasaur.png")
-    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, [lecture, teacher_strike, homework], "cookmander.png")
-    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, [lecture, teacher_strike, homework], "vincolairy.png")
-    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, [call, teacher_strike, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, [talking_back, complaining, homework], "andrewag.png")
-    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, [talking_back, complaining, homework], "caseypuff.png")
-    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, [talking_back, complaining, homework], "colboreon.png")
-    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, [talking_back, complaining, homework], "blakachu.png")
-    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, [talking_back, complaining, homework], "zoeotto.png")
-    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, [talking_back, complaining, homework], "morganyta.png")
-    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, [talking_back, complaining, homework], "katlevee.png")
-    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, [talking_back, complaining, homework], "marcelax.png")
+    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, 100, [homework, pop_quiz, teacher_strike], "coopasaur.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, 100, [lecture, teacher_strike, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, 100, [lecture, teacher_strike, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, 100, [call, teacher_strike, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, 100, [talking_back, complaining, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, 100, [talking_back, complaining, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, 100, [talking_back, complaining, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, 100, [talking_back, complaining, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, 100, [talking_back, complaining, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, 100, [talking_back, complaining, homework], "morganyta.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, 100, [talking_back, complaining, homework], "katlevee.png")
+    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, 100, [talking_back, complaining, homework], "marcelax.png")
     
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
