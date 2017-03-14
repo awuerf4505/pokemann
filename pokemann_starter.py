@@ -167,13 +167,13 @@ class Character:
             p.restore()
             
     
-    def get_first_pokemann(self):
+    def get_active_pokemann(self):
         """
         Returns the first [0] unfainted character in the pokemann list.
         """
         pass
     
-    def set_first_pokemann(self, swap_pos):
+    def set_active_pokemann(self, swap_pos):
         """
         Moves pokemann to first position [0] in the pokemann list by exchanging it with
         pokemann located at swap_pos.
@@ -204,58 +204,33 @@ class Player(Character):
         count by 1 regardless of success.
         """
         r = random.randint(1, 100)
-
+        result = []
         if r <= target.catch_rate:
-            pass
+            print("You caught " + target.name + ".")
+            result.append(target.name)
         else:
-            print("It got away!")
+            print(target.name+ " got away!")
+             
 
-class Opponent(Character):
+    def run(self, target):
+        """
+        Can only be applied in the presence of a wild pokemann. Success is determined by
+        comparing speeds of the player's active pokemann and the wild pokemann. Incoroporate
+        randomness so that speed is not the only factor determining success.
+        Return True if the escape is successful and False otherwise.
+        """
+        pass
+
+class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
-
-        self.image = image
 
 class Game:
 
     def __init__(self):
         pass
 
-    def select_pokemann(self, character):
-        """
-        1) Generate a menu which shows a numbered list of all characters along with status (health).
-        2) Have the player select a character.
-        3) Move the selected character to position [0] in the characters list.
-        """
-        pass
-
-    def select_random_pokemann(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        available_moves = pokemann.get_available_moves()
-        return random.choice(available_moves)
-    
-    def select_move(self, pokemann):
-        """
-        1) Generate a menu which shows a numbered list all available moves for a pokemann.
-        2) Have the player select a move.
-        3) Return the selected move.
-        """
-
-        available = pokemann.get_available_moves()
-        
-        print("Select a move:")
-        
-        for i, move in enumerate(available):
-            print(str(i) + ") " + move.name)
-
-        n = input("Your choice: ")
-        n = int(n)
-        
-        return available[n]
 
     def select_random_move(self, pokemann):
         """
@@ -355,13 +330,13 @@ if __name__ == '__main__':
     blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, 100, [talking_back, complaining, homework], "blakachu.png")
     zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, 100, [talking_back, complaining, homework], "zoeotto.png")
     morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, 100, [talking_back, complaining, homework], "morganyta.png")
-    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, 100, [talking_back, complaining, homework], "katlevee.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, 50, [talking_back, complaining, homework], "katlevee.png")
     marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, 100, [talking_back, complaining, homework], "marcelax.png")
     
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
-    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
-    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
+    rocket = NPC("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
+    jessie = NPC("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
 
     # Create a game
     g = Game()
