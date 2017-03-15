@@ -71,10 +71,8 @@ class Pokemann:
         Restores all health and resets powerpoint for all moves.
         """
         self.heal(self.health)
-        print(self.name + " restored")
         for m in self.moves:
             m.restore()
-            print(m.name+ " Restored")
         
 
     def draw(self):
@@ -168,9 +166,12 @@ class Character:
             
     
     def get_active_pokemann(self):
-        """
-        Returns the first [0] unfainted character in the pokemann list.
-        """
+        available = self.get_available_pokemann()
+
+        if len(available) > 0:
+            return pokemann[0]
+        else:
+            return None
         pass
     
     def set_active_pokemann(self, swap_pos):
@@ -204,12 +205,21 @@ class Player(Character):
         count by 1 regardless of success.
         """
         r = random.randint(1, 100)
-        result = []
-        if r <= target.catch_rate:
-            print("You caught " + target.name + ".")
-            result.append(target.name)
+        if self.pokeballs != 0:
+            self.pokeballs -= 1
+            if r <= target.catch_rate:
+                    if len(self.pokemann) >= 6:
+                        self.collection.append(target)
+                        for n in self.collection:
+                            n.restore()
+                        print("You caught " + target.name + ".")
+                    else:
+                        self.pokemann.append(target)
+                        print("You caught " + target.name + ".")
+            else:
+                print("It got away")
         else:
-            print(target.name+ " got away!")
+            print("No Pokeballs Remaining")
              
 
     def run(self, target):
@@ -219,7 +229,14 @@ class Player(Character):
         randomness so that speed is not the only factor determining success.
         Return True if the escape is successful and False otherwise.
         """
-        pass
+        r = random.randint(1,100)
+        m = random.randint(1,100)
+        for n in self.pokemann:
+            if r + n.speed > target.speed + m:
+                return True
+            else:
+                return False
+        
 
 class NPC(Character):
 
@@ -321,17 +338,17 @@ if __name__ == '__main__':
 
     # Create some Pokemann(s)
     coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, 100, [homework, pop_quiz, teacher_strike], "coopasaur.png")
-    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, 100, [lecture, teacher_strike, homework], "cookmander.png")
-    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, 100, [lecture, teacher_strike, homework], "vincolairy.png")
-    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, 100, [call, teacher_strike, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, 100, [talking_back, complaining, homework], "andrewag.png")
-    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, 100, [talking_back, complaining, homework], "caseypuff.png")
-    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, 100, [talking_back, complaining, homework], "colboreon.png")
-    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, 100, [talking_back, complaining, homework], "blakachu.png")
-    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, 100, [talking_back, complaining, homework], "zoeotto.png")
-    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, 100, [talking_back, complaining, homework], "morganyta.png")
-    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, 50, [talking_back, complaining, homework], "katlevee.png")
-    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, 100, [talking_back, complaining, homework], "marcelax.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 43, 100, 5, [lecture, teacher_strike, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 78, 120, 100, [lecture, teacher_strike, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 34, 20, 50, 90, 100, [call, teacher_strike, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 34, 150, 100, [talking_back, complaining, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 75, 170, 100, [talking_back, complaining, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 64, 80, 100, [talking_back, complaining, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 37, 130, 100, [talking_back, complaining, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 82, 100, 100, [talking_back, complaining, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 86, 160, 100, [talking_back, complaining, homework], "morganyta.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 78, 140, 50, [talking_back, complaining, homework], "katlevee.png")
+    marcelax = Pokemann("Marcelax", "student", 30, 20, 25, 30, 100, [talking_back, complaining, homework], "marcelax.png")
     
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
