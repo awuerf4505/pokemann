@@ -81,14 +81,6 @@ class Pokemann:
     def draw(self):
         pass
     
-    def get_available_moves(self):
-        result = []
-                  
-        for m in self.moves:
-            if m.remaining_power > 0:
-                  result.append(m)
-                  
-        return result
                   
     def get_move(self):
         """
@@ -175,7 +167,7 @@ class Character:
             return available[0]
         else:
             return None
-        pass
+        
     
     def set_active_pokemann(self, swap_pos):
         """
@@ -189,12 +181,13 @@ class Character:
 
 class Player(Character):
 
-    def __init__(self, name, pokemann, image):
-        Character.__init__(self, name, pokemann, image)
+    def __init__(self, name, party, image):
+        Character.__init__(self, name, party, image)
         
         self.computer = []
         self.pokeballs = 0
         self.image = image
+        self.party = self.party
 
 
     def catch(self, target):
@@ -211,13 +204,13 @@ class Player(Character):
         if self.pokeballs != 0:
             self.pokeballs -= 1
             if r <= target.catch_rate:
-                    if len(self.pokemann) >= 6:
+                    if len(self.party) >= 6:
                         self.computer.append(target)
                         for n in self.computer:
                             n.restore()
                         print("You caught " + target.name + ".")
                     else:
-                        self.pokemann.append(target)
+                        self.party.append(target)
                         print("You caught " + target.name + ".")
             else:
                 print("It got away")
@@ -254,74 +247,7 @@ class Game:
     def __init__(self):
         pass
 
-
-    def select_random_move(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        pass
-
-    def fight(self, player_pokemann, target_pokemann):
-        """
-        This controls the logic for a single round in a fight whether in context of a battle
-        or with a wild pokemann.
         
-        1. Select player_move (use select_move)
-        2. Select target_move (use select_random_move)
-        3. Compare speeds of player_pokemann and target_pokemann
-            If player_pokemann.speed > target_pokemann.speed, set first = player_pokemann,
-            second = target_pokemann. Otherwise, set first = target_pokemann, second = player_pokemann
-            If speeds are equal, assign first and second randomly.
-        4. Call
-            first.execute_move(move, second)
-        5. If second is still unfainted, call
-            second.execute_move(move, first)
-        (Once we have an actual game, we'll need to devise a way to remove fainted targets.)
-        """
-        pass
-    
-    def catch(self, target):
-        """
-        Can only be applied to wild pokemann. Determine a catch by generating a random
-        value based on the target health. If a catch is successful, add the target to the
-        player's collection. Decrease the player's pokeball count by 1 regardless of success.
-        (Perhaps pokeballs kind could be incorporated into the probability at some point.)
-        """
-        pass
-
-    def encounter(self, player, target):
-        """
-        This function controls all logic when encountering a wild pokemann. Options are to
-        fight, catch, or ignore.
-        Use a loop so that this continues until a pokemann is fainted, caught, or the
-        target is ignored.
-        """
-        pass
-    
-
-    def battle(self, player, opponent):
-        """
-        This function controls all battle logic including decisions to reorder pokemann,
-        fight, use potions, and whatever else happens in Pokebattles.
-        Use a loop so that this continues until all characters for either the player or
-        opponent are fainted.
-        """
-        pass
-    
-    def loop(self):
-        pass
-    
-        # get input
-
-        # do logic stuff
-
-        # draw stuff
-
-    '''def __init__(self, name, kind, powerpoint, power, accuracy):'''
-
-    '''    def __init__(self, name, kind, attack, defense, speed, health, moves, image):'''
-
 if __name__ == '__main__':
 
     # Make some moves
