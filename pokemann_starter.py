@@ -31,7 +31,8 @@ class Pokemann:
         available = self.get_available_moves()
 
         if self.fainted:
-            print("Error: " + self.name + " is fainted!")
+            print("Error: Your Pokemann, " + self.name + " is fainted!")
+
         elif move not in available:
             print("Error: " + move.name + " is not available.")
         else:
@@ -53,18 +54,20 @@ class Pokemann:
             self.faint()
             
     def faint(self):
-        self.current_health <= 0
-        print(self.name + " fainted!")
+        self.current_health = 0
+        self.fainted = True
+        print(self.name + " is fainted.")
                   
     def heal(self, amount):
         """
-        Raises current_health by amount but not more than the base health. hello
+        Raises current_health by amount but not more than the base health. 
         """
         self.current_health += amount
+
         if self.current_health > self.health:
             self.current_health = self.health
-        self.fainted = False
-        pass
+        print(self.name + "'s health is now {}/{}.".format(self.current_health, self.health))
+        
 
     def restore(self):
         """
@@ -142,9 +145,9 @@ class Move:
         
 class Character:
     
-    def __init__(self, name, pokemann, image):
+    def __init__(self, name, party, image):
         self.name = name
-        self.pokemann = pokemann
+        self.party = party
         self.image = image
 
     def get_available_pokemann(self):
@@ -152,7 +155,7 @@ class Character:
         Returns a list of all unfainted Pokemann belonging to a character.
         """
         result = []
-        for p in self.pokemann:
+        for p in self.party:
             if p.current_health == 0:
                 p.fainted = True
             if not p.fainted:
@@ -161,7 +164,7 @@ class Character:
         return result
 
     def restore(self):
-        for p in self.pokemann:
+        for p in self.party:
             p.restore()
             
     
@@ -169,7 +172,7 @@ class Character:
         available = self.get_available_pokemann()
 
         if len(available) > 0:
-            return pokemann[0]
+            return available[0]
         else:
             return None
         pass
@@ -189,7 +192,7 @@ class Player(Character):
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
         
-        self.collection = []
+        self.computer = []
         self.pokeballs = 0
         self.image = image
 
@@ -209,8 +212,8 @@ class Player(Character):
             self.pokeballs -= 1
             if r <= target.catch_rate:
                     if len(self.pokemann) >= 6:
-                        self.collection.append(target)
-                        for n in self.collection:
+                        self.computer.append(target)
+                        for n in self.computer:
                             n.restore()
                         print("You caught " + target.name + ".")
                     else:
@@ -229,19 +232,22 @@ class Player(Character):
         randomness so that speed is not the only factor determining success.
         Return True if the escape is successful and False otherwise.
         """
+
+        corn = self.get_active_pokemann()
+        
         r = random.randint(1,100)
-        m = random.randint(1,100)
-        for n in self.pokemann:
-            if r + n.speed > target.speed + m:
-                return True
-            else:
-                return False
+        if r <= 50:
+            return corn.speed >= target.speed
+        else:
+            return False
+            print("You failed to do the one thing that is innate to all living/active organisms on this globular rock, water, plasma, matteristic sphere that humans call their place of origin...run ya idiot")
+            
         
 
 class NPC(Character):
 
-    def __init__(self, name, pokemann, image):
-        Character.__init__(self, name, pokemann, image)
+    def __init__(self, name, party, image):
+        Character.__init__(self, name, party, image)
 
 class Game:
 
@@ -319,7 +325,7 @@ class Game:
 if __name__ == '__main__':
 
     # Make some moves
-    homework = Move("Homework", "teacher", 2, 10, 100)
+    homework = Move("Homework", "teacher", 10, 10, 100)
     pop_quiz = Move("Pop quiz", "teacher", 3, 30, 45)
     lecture = Move("Lecture", "teacher", 1, 15, 60)
     teacher_strike = Move("Teacher Strike", "teacher", 20, 60, 45)
