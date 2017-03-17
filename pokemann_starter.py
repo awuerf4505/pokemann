@@ -231,6 +231,7 @@ class Player(Character):
         r = random.randint(1,100)
         if r <= 50:
             return corn.speed >= target.speed
+            print("You ran away!")
         else:
             return False
             print("You failed to do the one thing that is innate to all living/active organisms on this globular rock, water, plasma, matteristic sphere that humans call their place of origin...run ya idiot")
