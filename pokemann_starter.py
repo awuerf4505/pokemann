@@ -253,7 +253,7 @@ if __name__ == '__main__':
 
     # Make some moves
     homework = Move("Homework", "teacher", 10, 10, 100)
-    pop_quiz = Move("Pop quiz", "teacher", 3, 30, 45)
+    pop_quiz = Move("Pop quiz", "teacher", 3, 30, 2)
     lecture = Move("Lecture", "teacher", 1, 15, 60)
     teacher_strike = Move("Teacher Strike", "teacher", 20, 60, 45)
     complaining = Move("Complaining", "teacher", 80, 10, 100)
